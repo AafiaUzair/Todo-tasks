@@ -1,0 +1,160 @@
+body {
+    font-family: "Trebuchet MS", Arial, sans-serif;
+    background: #f4f6f8;
+    margin: 0;
+    color: #222;
+}
+
+a {
+    color: #1d5d9b;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.site-header {
+    background: #1d5d9b;
+    color: #fff;
+    padding: 16px;
+}
+
+.site-header h1 {
+    margin: 0 0 8px 0;
+}
+
+.site-header nav {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.site-header nav a,
+.site-header nav button,
+.site-header nav span {
+    color: #fff;
+    font-size: 0.95rem;
+}
+
+.inline-form {
+    display: inline;
+}
+
+.site-header .inline-form button {
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: 24px auto;
+    padding: 0 16px;
+}
+
+.card {
+    background: #fff;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    margin-bottom: 16px;
+}
+
+.filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+input,
+select,
+textarea,
+button {
+    padding: 6px 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 0.95rem;
+}
+
+button {
+    background: #1d5d9b;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.task-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.task-table th,
+.task-table td {
+    border-bottom: 1px solid #e2e2e2;
+    padding: 8px;
+    text-align: left;
+}
+
+.link-button {
+    background: none;
+    border: none;
+    color: #1d5d9b;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1rem;
+    text-align: left;
+}
+
+.link-button:hover {
+    text-decoration: underline;
+}
+
+.alert {
+    background: #fff4d2;
+    border: 1px solid #f0d28c;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+}
+
+.small-text {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.stats {
+    margin-top: 0;
+}
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.modal-backdrop.show {
+    display: flex;
+}
+
+.modal {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.ghost {
+    background: #e2e2e2;
+    color: #222;
+    margin-left: 8px;
+}

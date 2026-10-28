@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Sign up</h2>
+<p class="small-text">Password must be at least 7 characters.</p>
+<form method="post" class="card">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Create account</button>
+</form>
+{% endblock %}

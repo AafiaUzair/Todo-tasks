@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do Task Manager</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+    <header class="site-header">
+        <h1>To-Do Task Manager</h1>
+        <nav>
+            {% if user.is_authenticated %}
+                <span>Hi, {{ user.username }}!</span>
+                <a href="{% url 'task_list' %}">Tasks</a>
+                <a href="{% url 'task_create' %}">New Task</a>
+                <form action="{% url 'logout' %}" method="post" class="inline-form">
+                    {% csrf_token %}
+                    <button type="submit">Log out</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Log in</a>
+                <a href="{% url 'register' %}">Sign up</a>
+            {% endif %}
+        </nav>
+    </header>
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

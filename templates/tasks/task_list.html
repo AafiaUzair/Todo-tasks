@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="card">
+    <h2>Your tasks</h2>
+    <form method="get" class="filters">
+        <input type="text" name="q" placeholder="Search tasks" value="{{ query }}" />
+        <select name="status">
+            <option value="">All status</option>
+            <option value="pending" {% if status == "pending" %}selected{% endif %}>Pending</option>
+            <option value="completed" {% if status == "completed" %}selected{% endif %}>Completed</option>
+            <option value="delayed" {% if status == "delayed" or status == "overdue" %}selected{% endif %}>Delayed</option>
+        </select>
+        <select name="priority">
+            <option value="">All priority</option>
+            <option value="low" {% if priority == "low" %}selected{% endif %}>Low</option>
+            <option value="medium" {% if priority == "medium" %}selected{% endif %}>Medium</option>
+            <option value="high" {% if priority == "high" %}selected{% endif %}>High</option>
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+</section>
+
+{% if reminder_tasks %}
+<section class="alert">
+    <strong>Reminder:</strong> You have tasks coming up soon.
+    <ul>
+        {% for task in reminder_tasks %}
+            <li>{{ task.title }}{% if task.due_date %} (due {{ task.due_date }}){% endif %}</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endif %}
+
+<section class="card">
+    <p class="stats">
+        Completed: {{ stats.completed }} |
+        Pending: {{ stats.pending }} |
+        Delayed: {{ stats.overdue }}
+    </p>
+    {% if tasks %}
+        <table class="task-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Priority</th>
+                    <th>Due</th>
+                    <th>Completed at</th>
+                    <th>Time left</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+                    <td>
+                        <button type="button" class="link-button js-task" data-title="{{ task.title }}" data-description="{{ task.description|default:'' }}" data-complete-url="{% url 'task_complete' task.id %}">
+                            {{ task.title }}
+                        </button>
+                        <br />
+                        <span class="small-text">{{ task.get_category_display }}</span>
+                    </td>
+                    <td>{{ task.priority|title }}</td>
+                    <td>{% if task.due_date %}{{ task.due_date }}{% else %}-{% endif %}</td>
+                    <td>{% if task.completed_at %}{{ task.completed_at }}{% else %}-{% endif %}</td>
+                    <td>{{ task.remaining_text }}</td>
+                    <td>
+                        {% if task.completed %}
+                            Completed
+                        {% elif task.due_date and task.due_date < now %}
+                            Delayed
+                        {% else %}
+                            Pending
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'task_update' task.id %}">Edit</a>
+                        <a href="{% url 'task_delete' task.id %}">Delete</a>
+                        {% if not task.completed %}
+                            <form method="post" action="{% url 'task_complete' task.id %}" class="inline-form">
+                                {% csrf_token %}
+                                <button type="submit" class="ghost">Mark done</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No tasks yet. Create your first one!</p>
+    {% endif %}
+</section>
+
+<div class="modal-backdrop" id="taskModal">
+    <div class="modal">
+        <h3 id="modalTitle">Task</h3>
+        <p id="modalDescription" class="small-text"></p>
+        <form method="post" id="modalForm">
+            {% csrf_token %}
+            <button type="submit">Mark as done</button>
+            <button type="button" class="ghost" id="modalClose">Close</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const modal = document.getElementById("taskModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalDescription = document.getElementById("modalDescription");
+    const modalForm = document.getElementById("modalForm");
+    const modalClose = document.getElementById("modalClose");
+
+    document.querySelectorAll(".js-task").forEach((button) => {
+        button.addEventListener("click", () => {
+            modalTitle.textContent = button.dataset.title || "Task";
+            modalDescription.textContent = button.dataset.description || "No description.";
+            modalForm.action = button.dataset.completeUrl;
+            modal.classList.add("show");
+        });
+    });
+
+    modalClose.addEventListener("click", () => {
+        modal.classList.remove("show");
+    });
+
+    modal.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            modal.classList.remove("show");
+        }
+    });
+
+    modalForm.addEventListener("submit", () => {
+        setTimeout(() => location.reload(), 300);
+    });
+
+    setInterval(() => location.reload(), 5000);
+</script>
+{% endblock %}

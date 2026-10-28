@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ action }} task</h2>
+<form method="post" class="card">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">{{ action }}</button>
+    <a href="{% url 'task_list' %}">Cancel</a>
+</form>
+{% endblock %}
